@@ -1,0 +1,73 @@
+{% extends 'dashboard/dashboardbase.html' %}
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+{% load static %}
+
+{% block content %}
+    <div class="container">
+        <div class="center verticle_center full_height">
+            <div class="login_section">
+                <div class="logo_login">
+                    <div class="center">
+                        <img width="210" src="{% static 'dashboard/images/logo/logo.png' %}" alt="#" />
+                    </div>
+                </div>
+                <div class="login_form">
+                    <form method="POST" enctype="multipart/form-data" action=#>
+                        {% csrf_token %}
+                        <fieldset>
+                            <input type="hidden" name="product_id" value="{{ product.id }}">
+
+                            <div class="field">
+                                <label class="label_field">Product Name</label>
+                                <input type="text" name="product_name" value="{{ product.name }}" required />
+                            </div>
+
+                            <div class="field">
+                                <label class="label_field">Price</label>
+                                <input type="number" name="product_price" value="{{ product.price }}" required />
+                            </div>
+
+                            <div class="field">
+                                <label class="label_field">Description</label>
+                                <input type="text" name="product_description" value="{{ product.description }}" required />
+                            </div>
+
+                            <div>
+                                <br>
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="field">
+                                            <label class="label_field">Picture</label>
+                                        </div>
+
+                                        <div class="col-sm-2 imgUp">
+                                            <div class="file-upload-wrapper">
+                                                <input type="file" class="file-upload" name="image" />
+                                                <p>Previous Image:</p>
+                                                {% if product.image %}
+                                                    <img src="{{ product.image.url }}" alt="Previous Image" width="100">
+                                                {% else %}
+                                                    No previous image.
+                                                {% endif %} 
+                                            </div>
+                                        </div><!-- col-2 -->
+                                    </div><!-- row -->
+                                </div><!-- container -->
+                            </div>
+
+                            <div class="field margin_0">
+                                <label class="label_field hidden">hidden label</label>
+                                <button type="submit" class="main_bt">Update Product</button>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+            
+
+          

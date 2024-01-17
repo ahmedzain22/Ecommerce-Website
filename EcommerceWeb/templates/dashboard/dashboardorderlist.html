@@ -1,0 +1,77 @@
+{% extends "dashboard/dashboardbase.html" %}
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+{% load static %}
+
+
+{% block content %}
+<div class="col-md-12">
+    <div class="white_shd full margin_bottom_30">
+        <div class="full graph_head" >
+                <div class="heading1 margin_0" >
+                    <h2>Order List</h2>
+                </div>
+                
+             </div>
+        </div>
+        <div id="maintable">
+        
+            <div class="table_section padding_infor_info">
+                <div class="table-responsive-sm">
+                    <table class="table" id = "studentTable">
+                        <thead>
+                            <tr>
+                                
+                                <th>Order ID</th>
+                                <th>Customer Name</th>
+                                <th>Customer Email</th>
+
+                                <th>Customer City</th>
+
+                                <th>Order Date</th>
+                                
+                                <th>Total Price</th>
+                                
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="list">
+                            {% for order in orders %}
+                                <tr>
+                                    
+                                    <td>{{ order.id }}</td>
+                                    <td>{{ order.shipping_address.first_name }}</td>
+                                    <td>{{ order.shipping_address.email }}</td>
+
+                                    <td>{{ order.shipping_address.city}}</td>
+
+
+                                    <td>{{ order.created_at }}</td>
+                                    
+                                    
+
+                                    <td>{{ order.total_price }}</td>
+
+                                    <td>
+                                        <a href="{% url 'dashboardorderdetail' order.id %}">
+                                            <button class="btn btn-primary" style="font-size: 14px;">Details</button>
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    
+                    </table>
+                </div>
+            </div>
+        </div> 
+    </div>
+</div>
+
+
+
+
+
+
+
+{% endblock %}

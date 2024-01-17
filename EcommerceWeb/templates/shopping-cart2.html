@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block content %}
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.3.2.min.js"></script>
+
+
+    <!-- Breadcrumb Section Begin -->
+    <section class="breadcrumb-option">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb__text">
+                        <h4>Shopping Cart</h4>
+                        <div class="breadcrumb__links">
+                            <a href="{% url 'home' %}">Home</a>
+                            <a href="{% url 'shop' %}">Shop</a>
+                            <span>Shopping Cart</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Breadcrumb Section End -->
+
+    <!-- Shopping Cart Section Begin -->
+    <section class="shopping-cart spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="shopping__cart__table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Quantity</th>
+                                    <th>Unit Price</th>
+                                    <th>Total</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <form method="post">
+                                    {% csrf_token %}
+                                    {% for item in cart %}
+                                        <input type="hidden" name="product_id_{{ item.product.id }}" value="{{ item.product.id }}">
+                                        <tr>
+                                            <td>{{ item.product.name }}</td>
+                                            <td>{{ item.quantity }}</td>
+                                            <td>${{ item.product.price }}</td>
+                                            <td>${{ item.total_price }}</td>
+                                            <td class="cart__close">
+                                                <a href="#" data-product-id="{{ item.product.id }}">
+                                                    <i class="fa fa-close"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </form>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <div class="continue__btn">
+                                <a href="{% url 'shop' %}">Continue Shopping</a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-lg-4">
+                    <div class="cart__total">
+                        <h6>Cart total</h6>
+                        <ul>
+                            <li>Total <span id="cart-total">${{ total_price }}</span></li>
+                        </ul>
+                        <a href="{% url 'checkout' %}" class="primary-btn">Proceed to checkout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Shopping Cart Section End -->
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.3.2.min.js"></script>
+
+<script id="removeFromCartUrl" data-url="{% url 'remove_from_cart' 0 %}"></script>
+
+<script>
+    jQuery(document).ready(function ($) {
+        $('.cart__close a').on('click', function (e) {
+            console.log('Button clicked!');  
+            e.preventDefault();
+
+            var productId = $(this).data('product-id');
+            console.log(productId);
+            var csrfToken = $('[name="csrfmiddlewaretoken"]').val();
+            console.log(csrfToken);
+            var removeFromCartUrl = $('#removeFromCartUrl').data('url').replace('0', productId);
+            console.log(removeFromCartUrl);
+            
+
+            $.ajax({
+                type: 'POST',
+                url: removeFromCartUrl,
+                data: {
+                    'product_id': productId,
+                    'csrfmiddlewaretoken': csrfToken
+                },
+                success: function (response) {
+                    if (response.success) {
+                        $('#cart-total').text('$' + response.total_price);
+                        $(e.target).closest('tr').remove();
+                    } else {
+                        alert('Failed to remove the item from the cart.');
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.log('AJAX Error:', status, error);
+                    alert('Error while communicating with the server. See console for details.');
+                }
+                
+            });
+        });
+    });
+</script>
+
+
+{% endblock %}

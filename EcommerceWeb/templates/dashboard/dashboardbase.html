@@ -1,0 +1,160 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <!-- basic -->
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <!-- mobile metas -->
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+      <!-- site metas -->
+      <title>Base </title>
+      <meta name="keywords" content="">
+      <meta name="description" content="">
+      <meta name="author" content="">
+      <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+      <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+      <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+      <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+      <!-- site icon -->
+      <link rel="icon" href="{% static 'dashboard/images/fevicon.png' %}" type="image/png" />
+      <!-- bootstrap css -->
+      <link rel="stylesheet" href="{% static 'dashboard/css/bootstrap.min.css' %}" />
+      <!-- site css -->
+      <link rel="stylesheet" href="{% static 'dashboard/style.css' %}" />
+      <!-- responsive css -->
+      <link rel="stylesheet" href="{% static 'dashboard/css/responsive.css' %}" />
+      <!-- color css -->
+      <link rel="stylesheet" href="{% static 'dashboard/css/colors.css' %}" />
+      <!-- select bootstrap -->
+      <link rel="stylesheet" href="{% static 'dashboard/css/bootstrap-select.css' %}" />
+      <!-- scrollbar css -->
+      <link rel="stylesheet" href="{% static 'dashboard/css/perfect-scrollbar.css' %}" />
+      <!-- custom css -->
+      <link rel="stylesheet" href="{% static 'dashboard/css/custom.css' %}" />
+      <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script> 
+      <![endif]-->
+   </head>
+   <body class="dashboard dashboard_1">
+      <div class="full_container">
+         <div class="inner_container">
+            <!-- Sidebar  -->
+            <nav id="sidebar">
+               <div class="sidebar_blog_1">
+                  <div class="sidebar-header">
+                     <div class="logo_section">
+                        <a href=#><img class="logo_icon img-responsive" src="{% static 'img/logo.png' %}" alt="#" /></a>
+                     </div>
+                  </div>
+               
+               <div class="sidebar_blog_2">
+                  <h4>General</h4>
+                  <ul class="list-unstyled components">
+                     
+                     <li><a href="{% url 'dashboardproductlist' %}"><i class="fa fa-table purple_color2"></i> <span>Products List</span></a></li>
+                     <li>
+                     <li><a href="{% url 'dashboardproductcreate' %}"><i class="fa fa-clock-o orange_color"></i> <span>Add Product</span></a></li>
+                     <li>
+                     <li><a href="{% url 'dashboardorderlist' %}" ><i class="fa fa-diamond purple_color"></i> <span>Orders list</span></a>
+                     </li>
+
+                     
+
+                     
+                     
+                     
+
+                     
+                  </ul>
+               </div>
+            </nav>
+            <!-- end sidebar -->
+            <!-- right content -->
+            <div id="content">
+               <!-- topbar -->
+               <div class="topbar">
+                  <nav class="navbar navbar-expand-lg navbar-light">
+                     <div class="full">
+                        <button type="button" id="sidebarCollapse" class="sidebar_toggle"><i class="fa fa-bars"></i></button>
+                        <div class="logo_section">
+                           <a href="{% url 'home' %}"><img class="img-responsive" src="{% static 'img/footer-logo.png' %}" alt="#" /></a>
+                        </div>
+                        <div class="right_topbar">
+                           <div class="icon_info">
+                              
+                              {% comment %} <ul class="user_profile_dd">
+                                 <li>
+                                     <a class="dropdown-toggle" data-toggle="dropdown">
+                                         <span class="name_user">
+                                             
+                                          {{ user.username }}
+                                             
+                                         </span>
+                                     </a>
+                                     <div class="dropdown-menu">
+                                       {% if user.is_authenticated %}
+                                          <a class="dropdown-item" href="{% url 'dashboardlogin' %}"><span>Log Out</span> <i class="fa fa-sign-out"></i></a>
+                                       {% else %}
+                                          <a class="dropdown-item" href="{% url 'dashboardlogin' %}"><span>Log In</span> <i class="fa fa-sign-in"></i></a>
+                                       {% endif %}
+
+                                     </div> 
+                                 </li>
+                             </ul> {% endcomment %}
+                             
+                           </div>
+                        </div>
+                     </div>
+                  </nav>
+               </div>
+               <!-- end topbar -->
+
+               <!-- dashboard inner -->
+               <div class="dashboard_inner">
+                  {% block content %}{% endblock %}
+               
+
+                  <!-- footer -->
+                  <div class="container-fluid">
+                     <div class="footer">
+                        <p>Copyright © 2023 Designed by AhmedZain. All rights reserved.<br><br>
+                           Distributed By: <a href=#>AhmedZain</a>
+                        </p>
+                     </div>
+                  </div>
+               </div>
+
+               <!-- end dashboard inner -->
+            </div>
+         </div>
+      </div>
+      <!-- jQuery -->
+      <script src="{% static 'dashboard/js/jquery.min.js'%}"></script>
+      <script src="{% static 'dashboard/js/popper.min.js'%}"></script>
+      <script src="{% static 'dashboard/js/bootstrap.min.js'%}"></script>
+      <!-- wow animation -->
+      <script src="{% static 'dashboard/js/animate.js'%}"></script>
+      <!-- select country -->
+      <script src="{% static 'dashboard/js/bootstrap-select.js'%}"></script>
+      <!-- owl carousel -->
+      <script src="{% static 'dashboard/js/owl.carousel.js'%}"></script> 
+      <!-- chart js -->
+      <script src="{% static 'dashboard/js/Chart.min.js'%}"></script>
+      <script src="{% static 'dashboard/js/Chart.bundle.min.js'%}"></script>
+      <script src="{% static 'dashboard/js/utils.js'%}"></script>
+      <script src="{% static 'dashboard/js/analyser.js'%}"></script>
+      <!-- nice scrollbar -->
+      <script src="{% static 'dashboard/js/perfect-scrollbar.min.js'%}"></script>
+      <script>
+         var ps = new PerfectScrollbar('#sidebar');
+      </script>
+      <!-- custom js -->
+      <script src="{% static 'dashboard/js/chart_custom_style1.js'%}"></script>
+      <script src="{% static 'dashboard/js/custom.js'%}"></script>
+   </body>
+</html>

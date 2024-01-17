@@ -1,0 +1,71 @@
+{% extends 'dashboard/dashboardbase.html' %}
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+{% load static %}
+
+{% block content %}
+
+    <div class="container">
+        <div class="center verticle_center full_height">
+            <div class="login_section">
+                <div class="logo_login">
+                    <div class="center">
+                        <img width="210" src="{% static 'img/footer-logo.png' %}" alt="#" />
+                    </div>
+                </div>
+                <div class="login_form">
+                    <form method="POST" id="boxForm" enctype="multipart/form-data" action="{% url 'dashboardproductcreate' %}">
+                    
+
+                        {% csrf_token %}
+                        <fieldset>
+                            
+                            <div class="field">
+                                <label class="label_field">Product Name</label>
+                                <input type="text" name="product_name" placeholder="Enter Product Name" required />
+                            </div>
+
+                            <div class="field">
+                                <label class="label_field">Price</label>
+                                <input type="number" name="product_price" placeholder="Enter Product Price" required/>
+                            </div>
+
+                            <div class="field">
+                                <label class="label_field">Discription</label>
+                                <input type="text" name="product_discription" placeholder="Write Product Discription"required />
+                            </div>
+                            <div>
+                                
+                                <br><div class="container">
+                                        <div class="row">
+                                            <div class="field">
+                                                <label class="label_field">Picture</label>
+                                            </div>
+
+                                            <div class="col-sm-2 imgUp">
+                                                <div class="file-upload-wrapper">
+                                                    <input type="file" id="input-file-now" class="file-upload" name="image" required/>
+
+                                                  </div>
+                                            </div><!-- col-2 -->
+                                            
+                                        </div><!-- row -->
+                                    </div><!-- container -->
+                            </div>
+            
+                            <div class="field margin_0">
+                                <label class="label_field hidden">hidden label</label>
+                                <button type="submit" class="main_bt">Submit</button>
+                                
+                            </div>
+
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+
+  

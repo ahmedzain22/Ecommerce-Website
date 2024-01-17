@@ -1,0 +1,173 @@
+
+{% extends "base.html" %}
+
+{% load static %}
+{% block content %}
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://js.stripe.com/v3/"></script>
+
+    <!-- Breadcrumb Section Begin -->
+    <section class="breadcrumb-option">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb__text">
+                        <h4>Check Out</h4>
+                        <div class="breadcrumb__links">
+                            <a href="./index.html">Home</a>
+                            <a href="./shop.html">Shop</a>
+                            <span>Check Out</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Breadcrumb Section End -->
+
+    <section class="checkout spad">
+        <div class="container">
+            <div class="checkout__form">
+                <form method="post" action="{% url 'checkout' %}"  id="payment-form">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-lg-8 col-md-6">
+                             
+                            <h6 class="checkout__title">Billing Details</h6>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="checkout__input">
+                                        <p>First Name<span>*</span></p>
+                                        <input type="text" name="first_name" id="first_name" required>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="checkout__input">
+                                        <p>Last Name<span>*</span></p>
+                                        <input type="text" name="last_name" id="last_name" required>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="checkout__input">
+                                        <p>Phone<span>*</span></p>
+                                        <input type="number" name="phone" id="phone" required>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="checkout__input">
+                                        <p>Email<span>*</span></p>
+                                        <input type="email" name="email" id="email" required>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="checkout__input">
+                                <p>Address<span>*</span></p>
+                                <input type="text" name="address" id="address" placeholder="Street Address" class="checkout__input__add" required>
+                            </div>
+                            
+                            <div class="checkout__input">
+                                <p>City<span>*</span></p>
+                                <input type="text" name="city" id="city" required>
+                            </div>
+                            
+                            <div class="checkout__input">
+                                <p>Country<span>*</span></p>
+                                <input type="text" name="country" id="country" required>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4 col-md-6">
+                            <div class="checkout__order">
+                                <h4 class="order__title">Your order</h4>
+                                <div class="checkout__order__products">Product <span>Total</span></div>
+                                <ul class="checkout__total__products">
+                                    <input type="hidden" name="item_count" value="{{ listlength }}">
+                                    {% for item in product_list %}
+                                        
+                                        <li>{{ forloop.counter }}. {{ item.product_name }} <span>${{ item.total_price }}</span></li>
+                                        <input type="hidden" name="product_name_{{ forloop.counter0 }}" value="{{ item.product_name }}">
+                                        <input type="hidden" name="product_price_{{ forloop.counter0 }}" value="{{ item.product_price }}">
+                                        <input type="hidden" name="total_price_{{ forloop.counter0 }}" value="{{ item.total_price }}">
+                                        <input type="hidden" name="quantity_{{ forloop.counter0 }}" value="{{ item.quantity }}">
+                                    {% endfor %}
+                                </ul>
+                                <ul class="checkout__total__all">
+                                    <li>Total <span>${{ Grandtotal }}</span></li>
+                                    <input type="hidden" name="Grandtotal" value="{{ Grandtotal }}">
+                                </ul>
+                                
+                                
+                                    
+                                        
+                                
+                                <div id="card-element"></div>
+                                <button id="card-button" data-secret="{{ client_secret }}" class="site-btn">PLACE ORDER</button>
+                                
+                                <input type="hidden" name="payment_method" id="payment-method" value="">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+    <!-- Checkout Section End -->
+
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#payment-form").submit(function (event) {
+                var isValid = true;
+                $("input[required]").each(function () {
+                    if ($(this).val().trim() === "") {
+                        alert("Please fill in all the required fields.");
+                        isValid = false;
+                        return false; 
+                    }
+                });
+
+                if (!isValid) {
+                    event.preventDefault(); 
+                }
+            });
+        });
+    </script>
+
+
+
+    <script>
+        const stripe = Stripe('pk_test_51MeJd8SIjG3FFutohFE21ai2XokOKHiwOj6JANzSd772glCAV6yTtupPXBXP5iYu1zOYhDwY7S5pfZ6QzqcvMuNJ00mxv7NfUO');
+    
+        const elements = stripe.elements();
+    
+        const card = elements.create('card');
+        card.mount('#card-element');
+    
+        const form = document.getElementById('payment-form');
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+    
+            const { paymentMethod, error } = await stripe.createPaymentMethod({
+                type: 'card',
+                card: card,
+            });
+    
+            if (error) {
+                console.error(error);
+            } else {
+                document.getElementById('payment-method').value = paymentMethod.id;
+    
+                form.submit();
+            }
+        });
+    </script>
+
+    
+    
+    
+
+    {% endblock %}

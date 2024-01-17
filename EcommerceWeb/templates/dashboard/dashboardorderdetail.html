@@ -1,0 +1,92 @@
+{% extends "dashboard/dashboardbase.html" %}
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+{% load static %}
+
+
+{% block content %}
+<div class="col-md-12">
+    <div class="white_shd full margin_bottom_30">
+        <div class="full graph_head" >
+                <div class="heading1 margin_0" >
+                    <h2>Order Detail </h2>
+                    
+                </div>
+                
+             </div>
+
+        </div>
+        
+        <div class="full graph_head" >
+            <div class="heading1 margin_0" >
+                <h4>Order Number : {{ order.id }}</h4>
+                <h4>Customer Name : {{ order.shipping_address.first_name }}{{ order.shipping_address.last_name }}</h4>
+                
+            </div>
+            
+        </div>
+        
+
+    
+        
+        <div id="maintable">
+        
+            <div class="table_section padding_infor_info">
+                <div class="table-responsive-sm">
+                    <table class="table" id = "studentTable">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Picture</th>
+                                <th>Product Id</th>
+
+                                <th>Product Name</th>
+                                <th>Product Price</th>
+                                <th>Quantity</th>
+                                <th>Sub Total Price</th>
+                            </tr>
+                        </thead>
+                        <tbody id="orderDetailsList">
+                            {% for order_item in order.orderitem_set.all %}
+                                <tr>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>
+                                        {% if order_item.product.image %}
+                                            <img src="{{ order_item.product.image.url }}" alt="Product Image" class="rounded-circle" width="50" height="50">
+                                        {% else %}
+                                            <!-- Handle the case when no image is present -->
+                                            No Image
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ order_item.product.id }}</td>
+                                    <td>{{ order_item.product_name }}</td>
+                                    <td>{{ order_item.product_price }}</td>
+
+
+                                    <td>{{ order_item.quantity }}</td>
+                                    <td>${{ order_item.total_price }}</td>
+
+                                    
+                                </tr>
+                            {% endfor %}
+                            
+                            <tr>
+                                <td colspan="5"></td>
+                                <td style="text-align: right;"><strong>Total Price:</strong></td>
+                                <td><strong>${{ order.total_price }}</strong></td>
+                            </tr>
+                            
+                        </tbody>
+                        
+
+                    
+                    </table>
+
+                </div>
+            </div>
+        </div> 
+    </div>
+</div>
+
+
+{% endblock %}

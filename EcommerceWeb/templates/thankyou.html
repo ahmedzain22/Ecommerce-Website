@@ -1,0 +1,59 @@
+
+
+
+
+
+
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block content %}
+    <!-- Breadcrumb Section Begin -->
+    <section class="breadcrumb-option">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb__text">
+                        <h4>Thank You</h4>
+                        <div class="breadcrumb__links">
+                            <a href="{% url 'home' %}">Home</a>
+                            <a href="{% url 'shop' %}">Shop</a>
+                            <span>Thank You</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Breadcrumb Section End -->
+
+    <!-- Thank You Section Begin -->
+    <section class="thankyou spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="thankyou__content">
+                        <h2>Thank you for your order!</h2>
+                        <p>Your order has been successfully placed. Here are the details:</p>
+
+                        <div class="thankyou__details">
+                            <p>Order Number: <strong>{{ order.id}}</strong></p>
+                        </div>
+
+                        <p>We appreciate your business. If you have any questions, please contact our customer support.</p>
+
+                        <a href="{% url 'home' %}" class="site-btn">Back to Home</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Thank You Section End -->
+
+    
+
+
+
+    
+{% endblock %}

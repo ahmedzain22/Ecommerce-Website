@@ -1,0 +1,142 @@
+{% extends "dashboard/dashboardbase.html" %}
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+{% load static %}
+
+
+{% block content %}
+<div class="col-md-12">
+    <div class="white_shd full margin_bottom_30">
+        <div class="full graph_head" >
+                <div class="heading1 margin_0" >
+                    <h2>Products List</h2>
+                </div>
+                
+             </div>
+        </div>
+        <div id="maintable">
+        
+            <div class="table_section padding_infor_info">
+                <div class="table-responsive-sm">
+                    <table class="table" id = "studentTable">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Picture</th>
+
+                                <th>Product Name</th>
+                                <th>Product Price</th>
+                                
+
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="list">
+                            {% for product in product_list %}
+                                <tr>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>
+                                        {% if product.image %}
+                                            <img src="{{ product.image.url }}" alt="Product Image" class="rounded-circle" width="50" height="50">
+                                        {% else %}
+                                            <!-- Handle the case when no image is present -->
+                                            No Image
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ product.name }}</td>
+                                    <td>{{ product.price }}</td>
+                            
+                                    
+                                    <td>
+                                        <a href="{% url 'dashboardproductupdate' product.id %}">
+                                            <button class="btn btn-primary" style="font-size: 14px;">Update</button>
+                                        </a>
+                                        <a href=#>
+                                            
+                                            <button class="btn btn-danger delete-product" data-pid="{{ product.id }}" data-toggle="modal" data-target="#confirmationModal" style="font-size: 14px;">Delete</button>
+                                        </a>
+                                        
+                                    </td>
+                                    
+                                </tr>
+                            {% endfor %}
+                            
+                        
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div> 
+    </div>
+</div>
+<div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmationModalLabel">Confirmation</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger" id="confirmDelete"  >Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="successModalLabel">Success</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Display success message here -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="location.reload(true);">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    $('.delete-product').click(function () {
+        var productId = $(this).data('pid');
+
+        $('#confirmationModal').find('.modal-body').text('Are you sure you want to delete the product with ID ' + productId + '?');
+
+        $('#confirmDelete').click(function () {
+            $.ajax({
+                url: '{% url "delete_product" 0 %}'.replace('0', productId),
+                method: 'POST',
+                data: { csrfmiddlewaretoken: '{{ csrf_token }}' },
+                success: function (data) {
+                    $('#confirmationModal').modal('hide');
+                    $('#successModal').modal('show');
+                    $('#successModal').find('.modal-body').text('Product with ID ' + productId + ' has been deleted.');
+
+                },
+
+                
+
+                error: function (error) {
+                    $('#confirmationModal').modal('hide');
+                    alert('Error deleting product with ID ' + productId + ': ' + error.responseText);
+                },
+            });
+        });
+    });
+</script>
+
+
+
+{% endblock %}
